@@ -12,12 +12,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/containerd/containerd/archive"
-	"github.com/containerd/containerd/archive/compression"
-	"github.com/containerd/containerd/images"
-	"github.com/containerd/containerd/namespaces"
-	"github.com/containerd/containerd/platforms"
-	"github.com/containerd/containerd/remotes"
+	"github.com/containerd/containerd/v2/core/images"
+	"github.com/containerd/containerd/v2/core/remotes"
+	"github.com/containerd/containerd/v2/pkg/archive"
+	"github.com/containerd/containerd/v2/pkg/archive/compression"
+	"github.com/containerd/containerd/v2/pkg/namespaces"
+	"github.com/containerd/platforms"
 	"github.com/containerd/errdefs"
 	ocispec "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/sirupsen/logrus"
@@ -66,7 +66,8 @@ func (r *Registry) Pull(ctx context.Context, ref image.Reference) error {
 
 	var name string
 	var root ocispec.Descriptor
-	if err := retry.OnError(retryBackoff,
+	if err := retry.OnError(
+		retryBackoff,
 		func(pullErr error) bool {
 			r.log.Warnf("Error resolving registry %q: %v. Retrying", ref.String(), pullErr)
 			return true
@@ -85,7 +86,8 @@ func (r *Registry) Pull(ctx context.Context, ref image.Reference) error {
 		return err
 	}
 
-	if err := retry.OnError(retryBackoff,
+	if err := retry.OnError(
+		retryBackoff,
 		func(pullErr error) bool {
 			if nonRetriablePullError.MatchString(pullErr.Error()) {
 				return false

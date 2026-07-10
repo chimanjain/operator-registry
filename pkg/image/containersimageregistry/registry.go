@@ -8,7 +8,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/containerd/containerd/archive"
+	"github.com/containerd/containerd/v2/pkg/archive"
 	dockerconfig "github.com/docker/cli/cli/config"
 	"go.podman.io/common/pkg/auth"
 	"go.podman.io/image/v5/copy"
@@ -71,6 +71,7 @@ type cacheConfig struct {
 func (c *cacheConfig) ociLayoutDir() string {
 	return filepath.Join(c.baseDir, "oci-layout")
 }
+
 func (c *cacheConfig) blobInfoCacheDir() string {
 	return filepath.Join(c.baseDir, "blob-info-cache")
 }
